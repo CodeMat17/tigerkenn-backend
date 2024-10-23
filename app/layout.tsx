@@ -1,6 +1,9 @@
+import SideNav from "@/components/SideNav";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+import Header from "@/components/Header";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,11 +27,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <div className='flex min-h-screen'>
+          <SideNav />
+          <main className='flex-grow h-screen overflow-y-auto bg-gray-50'>
+            <Header />
+            {children}
+          </main>
+          <Toaster />
+        </div>
       </body>
     </html>
   );
