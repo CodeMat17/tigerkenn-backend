@@ -33,7 +33,7 @@ const Update = async ({ params: { id } }: Props) => {
   }
 
   return (
-    <div className='py-12 w-full min-h-screen max-w-xl mx-auto'>
+    <div className='py-12 px-4 w-full min-h-screen max-w-xl mx-auto'>
       <h1 className='text-3xl text-center font-semibold mb-6'>Update Listings</h1>
 
       <UpdateListingPage id={listing.id} listTitle={listing.title} listLocation={listing.location} listDesc={listing.desc} listPrice={listing.price} listBeds={listing.beds} listBaths={listing.baths} listSqm={listing.sqm} listStatus={listing.status} listImg={listing.img} listOtherImgs={listing.other_imgs} />

@@ -371,7 +371,7 @@ const UpdateListingPage = ({
           </div>
         </div>
 
-        <div className='flex gap-3'>
+        <div className='flex flex-col sm:flex-row gap-3'>
           <div>
             <label>Price (₦)</label>
             <div className='flex items-center border border-gray-400 rounded-xl overflow-hidden mt-1'>
@@ -420,7 +420,7 @@ const UpdateListingPage = ({
           </div>
         </div>
 
-        <div className='flex gap-3'>
+        <div className='flex flex-col sm:flex-row gap-3'>
           <div>
             <label>Beds</label>
             <div className='flex items-center border border-gray-400 rounded-xl overflow-hidden mt-1'>
@@ -469,7 +469,7 @@ const UpdateListingPage = ({
           </div>
         </div>
 
-        <div className='flex gap-3'>
+        <div className='flex flex-col sm:flex-row gap-3'>
           <div>
             <label>Location (max characters - 17)</label>
             <div className='flex items-center border border-gray-400 rounded-xl overflow-hidden mt-1'>
