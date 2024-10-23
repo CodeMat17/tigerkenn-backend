@@ -7,6 +7,7 @@ import "react-quill/dist/quill.snow.css";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -106,7 +107,7 @@ const ContactInfo = ({
 
       <div>
         <label className='text-sm mb-1'>Subtitle</label>
-        <Input
+        <Textarea
           placeholder='Enter the contact page subtitle'
           value={subtitle}
           onChange={(e) => setSubtitle(e.target.value)}

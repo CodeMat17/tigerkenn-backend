@@ -7,6 +7,7 @@ import {
   PaginationItem,
 } from "@/components/ui/pagination";
 import { createClient } from "@/utils/supabase/clients";
+import { type User } from "@supabase/supabase-js";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -15,6 +16,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type ListingsProps = {
@@ -31,7 +33,12 @@ type ListingsProps = {
   desc: string;
 };
 
-const ListingsPage = () => {
+const ListingsPage = ({ user }: { user: User }) => {
+  const router = useRouter();
+  if (!user) {
+    router.push("/login");
+  }
+
   const supabase = createClient();
 
   const [listings, setListings] = useState<ListingsProps[]>([]);

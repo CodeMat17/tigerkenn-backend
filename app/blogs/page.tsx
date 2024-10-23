@@ -26,7 +26,7 @@ const BlogPage = async () => {
   }
 
   return (
-    <div className=''>
+    <div className='px-4 py-12'>
       <h1 className='text-3xl font-semibold text-center mb-3'>Blog Post</h1>
       <div className='flex justify-center mb-12'>
         <Button asChild>

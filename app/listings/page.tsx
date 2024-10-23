@@ -1,5 +1,5 @@
 import ListingsPage from "@/components/ListingsPage";
-import { createClient } from "@/utils/supabase/clients";
+import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 // type ListingsProps = {
@@ -29,7 +29,7 @@ const Listings = async () => {
 
   return (
     <div className='px-2 py-12 '>
-      <ListingsPage />
+      <ListingsPage user={user} />
     </div>
   );
 };
