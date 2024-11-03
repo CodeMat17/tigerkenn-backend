@@ -6,11 +6,11 @@ export const revalidate = 0;
 
 type Props = {
   params: {
-    id: string;
+    slug: string;
   };
 };
 
-const Update = async ({ params: { id } }: Props) => {
+const Update = async ({ params: { slug } }: Props) => {
   const supabase = createClient();
 
    const {
@@ -24,7 +24,7 @@ const Update = async ({ params: { id } }: Props) => {
   const { data: listing, error } = await supabase
     .from("listings")
     .select("*")
-    .eq("id", id)
+    .eq("slug", slug)
     .single();
 
   if (!listing || error) {

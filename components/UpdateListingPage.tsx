@@ -3,14 +3,22 @@
 import { CloudUploadIcon, MinusIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 // import Image from "next/image";
-import {  useState } from "react";
+import ListingMainImage from "@/components/ListingMainImage";
+import ListingOtherImages from "@/components/ListingOtherImages";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import ListingOtherImages from "@/components/ListingOtherImages";
-import ListingMainImage from "@/components/ListingMainImage";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+
+const generateSlug = (title: string) => {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "") // Remove special characters
+    .replace(/\s+/g, "-"); // Replace spaces with hyphens
+};
 
 type DataProps = {
   id: string;
@@ -25,8 +33,6 @@ type DataProps = {
   listImg: string;
   listOtherImgs: string[];
 };
-
-
 
 const UpdateListingPage = ({
   id,
@@ -50,7 +56,7 @@ const UpdateListingPage = ({
   const [beds, setBeds] = useState(listBeds || "");
   const [baths, setBaths] = useState(listBaths || "");
   const [sqm, setSqm] = useState<number>(listSqm || 0);
-  const [status, setStatus] = useState(listStatus || ""); 
+  const [status, setStatus] = useState(listStatus || "");
 
   const [updatingTitle, setUpdatingTitle] = useState(false);
   const [updatingLocation, setUpdatingLocation] = useState(false);
@@ -61,17 +67,11 @@ const UpdateListingPage = ({
   const [updatingSqm, setUpdatingSqm] = useState(false);
   const [updatingDesc, setUpdatingDesc] = useState(false);
 
-
   // const handleMainButtonClick = () => {
   //   if (mainInputRef.current) {
   //     mainInputRef.current.click();
   //   }
   // };
-
-
-
-
-
 
   const updateListingTitle = async () => {
     setUpdatingTitle(true);
@@ -82,11 +82,13 @@ const UpdateListingPage = ({
       return;
     }
 
+    const slug = generateSlug(title);
+
     try {
       const res = await fetch("/api/update-listing-title", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, title }),
+        body: JSON.stringify({ id, title, slug }),
       });
 
       const result = await res.json();
@@ -473,7 +475,8 @@ const UpdateListingPage = ({
           <div>
             <label>Location (max characters - 17)</label>
             <div className='flex items-center border border-gray-400 rounded-xl overflow-hidden mt-1'>
-              <input maxLength={17}
+              <input
+                maxLength={17}
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder='Location'

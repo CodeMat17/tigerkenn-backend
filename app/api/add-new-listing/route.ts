@@ -30,7 +30,8 @@ export async function POST(request: Request) {
     const price = formData.get("price");
     const category = formData.get("category") as string;
     const status = formData.get("status") as string;
-    const files = formData.getAll("files") as File[]; // 'other_imgs' field
+    const files = formData.getAll("files") as File[];
+    const slug = formData.get('slug')
 
     // Validation: ensure required fields are present
     if (
@@ -43,7 +44,7 @@ export async function POST(request: Request) {
       !sqm ||
       !price ||
       !category ||
-      !status
+      !status || !slug
     ) {
       return new Response(
         JSON.stringify({ error: "Fill the required fields" }),
@@ -109,6 +110,7 @@ export async function POST(request: Request) {
           desc,
           category,
           status,
+          slug,
         },
       ])
       .select();

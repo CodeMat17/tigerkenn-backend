@@ -53,7 +53,7 @@ const EditAboutUsIntro = ({ id, dataTitle, dataDesc }: DataProps) => {
 
   return (
     <div className=' max-w-3xl mx-auto mb-16'>
-      <h2 className='text-3xl text-center font-medium mb-6'>Our Mission</h2>
+      <h2 className='text-3xl text-center font-medium mb-6'>Intro</h2>
       <form onSubmit={handleSubmit} className='space-y-4'>
         <div>
           <label className='block text-sm font-medium text-gray-700 dark:text-gray-400'>

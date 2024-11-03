@@ -31,6 +31,7 @@ type ListingsProps = {
   sqm: number;
   available: boolean;
   desc: string;
+  slug: string;
 };
 
 const ListingsPage = ({ user }: { user: User }) => {
@@ -62,7 +63,7 @@ const ListingsPage = ({ user }: { user: User }) => {
     let query = supabase
       .from("listings")
       .select(
-        "id, img, price, status, title, beds, baths, sqm, location, available, desc",
+        "id, img, price, status, title, beds, baths, sqm, location, available, desc, slug",
         {
           count: "exact",
         }
@@ -74,7 +75,7 @@ const ListingsPage = ({ user }: { user: User }) => {
       query = supabase
         .from("listings")
         .select(
-          "id, img, price, status, title, beds, baths, sqm, location, available, desc",
+          "id, img, price, status, title, beds, baths, sqm, location, available, desc, slug",
           {
             count: "exact",
           }
@@ -139,7 +140,7 @@ const ListingsPage = ({ user }: { user: User }) => {
             <div className='flex flex-wrap justify-center gap-4'>
               {listings &&
                 listings.map((list) => (
-                  <Link key={list.id} href={`/listings/${list.id}`}>
+                  <Link key={list.id} href={`/listings/${list.slug}`}>
                     <div className='max-w-[300px] border  rounded-xl overflow-hidden shadow-md '>
                       <Image
                         alt={list.id}

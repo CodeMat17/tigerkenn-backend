@@ -3,6 +3,7 @@
 import {
   LayoutList,
   LayoutPanelLeftIcon,
+  PodcastIcon,
   PowerOffIcon,
   RssIcon,
   UserRoundPenIcon,
@@ -19,6 +20,7 @@ const links = [
   { label: "LISTINGS", href: "/listings", icon: LayoutList },
   { label: "BLOG POSTS", href: "/blogs", icon: RssIcon },
   { label: "CONTACT US", href: "/contact-us", icon: UserRoundPenIcon },
+  { label: "SUBSCRIBERS", href: "/subscribers", icon: PodcastIcon },
 ];
 
 const SideNav = () => {

@@ -19,7 +19,15 @@ import { MinusIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { toast } from "sonner"; // For notifications
+import { toast } from "sonner";
+
+const generateSlug = (title: string) => {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "") // Remove special characters
+    .replace(/\s+/g, "-"); // Replace spaces with hyphens
+};// For notifications
 
 const AddNewList = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -74,7 +82,7 @@ const AddNewList = ({ user }: { user: User }) => {
       !desc ||
       !price ||
       !category ||
-      !status
+      !status 
     ) {
       toast.error("Please fill all the required fields.");
       return;
@@ -83,6 +91,8 @@ const AddNewList = ({ user }: { user: User }) => {
     setUploading(true);
 
     try {
+
+      const slug = generateSlug(title);
       // Prepare FormData
       const formData = new FormData();
 
@@ -95,6 +105,7 @@ const AddNewList = ({ user }: { user: User }) => {
       formData.append("status", status);
       formData.append("desc", desc);
       formData.append("category", category);
+      formData.append('slug', slug);
 
       // Append the main image
       if (img) {

@@ -8,6 +8,11 @@ import { EyeIcon, EyeOffIcon, MinusIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+const isValidEmail = (email: string) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
 export default function FormComponent() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,12 +31,20 @@ export default function FormComponent() {
       password: formData.get("password") as string,
     };
 
-    // Validate email and password fields
-    if (!data.email || !data.password) {
+    // Use isValidEmail to validate email format
+    if (!isValidEmail(data.email)) {
       toast("FAILED!", {
-        description: "Email and Password are required.",
+        description: "Invalid email format.",
       });
-      return; // Exit if validation fails
+      return; // Exit if email is invalid
+    }
+
+    // Validate password field
+    if (!data.password) {
+      toast("FAILED!", {
+        description: "Password is required.",
+      });
+      return; // Exit if password is missing
     }
 
     try {

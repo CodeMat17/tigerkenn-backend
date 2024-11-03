@@ -30,6 +30,8 @@ const BlogDetails = async ({ params: { id } }: Props) => {
     return null;
   }
 
+
+
   return (
     <div className='px-4 py-12 w-full min-h-screen max-w-xl mx-auto'>
       <h1 className='text-3xl text-center font-semibold mb-6'>
