@@ -1,10 +1,11 @@
 import SideNav from "@/components/SideNav";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Header from "@/components/Header";
 import { createClient } from "@/utils/supabase/server";
+import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,9 +19,14 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
+  manifest: "/manifest.json",
   title: "Tigerkenn Homes Backend",
 
 };
+
+export const viewport: Viewport = {
+  themeColor: "#3367D6"
+}
 
 export default async function RootLayout({
   children,
@@ -48,6 +54,7 @@ const {
             {children}
           </main>
           <Toaster />
+          <PWAInstallPrompt />
         </div>
       </body>
     </html>
