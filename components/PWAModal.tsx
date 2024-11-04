@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -38,7 +37,7 @@ const PWAModal: React.FC<PWAModalProps> = ({
           </DialogDescription>
         </DialogHeader>
 
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-end gap-4'>
           <Button onClick={() => onOpenChange(false)} className='bg-gray-500'>
             Close
           </Button>
