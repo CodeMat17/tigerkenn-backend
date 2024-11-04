@@ -37,10 +37,13 @@ const PWAModal: React.FC<PWAModalProps> = ({
             Get quick access by installing the app on your device.
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
+
+        <div className='flex items-center justify-between'>
+          <Button onClick={() => onOpenChange(false)} className='bg-gray-500'>
+            Close
+          </Button>
           <Button onClick={onInstallClick}>Install App</Button>
-          <Button onClick={() => onOpenChange(false)}className="bg-gray-500">Close</Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );
