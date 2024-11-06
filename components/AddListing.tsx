@@ -20,6 +20,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
+import { Switch } from "@/components/ui/switch";
+
 
 const generateSlug = (title: string) => {
   return title
@@ -47,6 +49,8 @@ const AddNewList = ({ user }: { user: User }) => {
   const [desc, setDesc] = useState("");
   const [status, setStatus] = useState("");
   const [category, setCategory] = useState("");
+  const [fenced, setFenced] = useState(false);
+  const [gate, setGate] = useState(false);
 
   const [uploading, setUploading] = useState(false);
 
@@ -90,6 +94,9 @@ const AddNewList = ({ user }: { user: User }) => {
 
     setUploading(true);
 
+        console.log("FENCED: ", fenced);
+        console.log("GATE: ", gate);
+
     try {
 
       const slug = generateSlug(title);
@@ -106,6 +113,8 @@ const AddNewList = ({ user }: { user: User }) => {
       formData.append("desc", desc);
       formData.append("category", category);
       formData.append('slug', slug);
+      formData.append("fenced", fenced.toString());
+      formData.append("gate", gate.toString());
 
       // Append the main image
       if (img) {
@@ -125,6 +134,8 @@ const AddNewList = ({ user }: { user: User }) => {
         body: formData, // Send the form data
       });
 
+        const result = await response.json();
+
       if (response.ok) {
         toast("DONE!", {
           description: "Listing added successfully",
@@ -141,11 +152,12 @@ const AddNewList = ({ user }: { user: User }) => {
         setDesc("");
         setStatus("");
         setCategory("");
+ 
         router.push("/listings");
       } else {
-        toast.error("ERROR!", {
-          description: "Failed to add listing",
-        });
+         toast.error("Error updating image", {
+           description: `${result.error}` || "Something went wrong",
+         });
       }
     } catch (error) {
       toast.error("ERROR!", {
@@ -175,22 +187,22 @@ const AddNewList = ({ user }: { user: User }) => {
               className='mt-1'
             />
           </div>
-          <div className='flex gap-4 w-full'>
-            <div className='w-full'>
-              <label className='text-sm text-gray-400'>
-                Location (max characters - 17)
-              </label>
-              <Input
-                maxLength={17}
-                placeholder='Eg. Emene, Enugu'
-                name='location'
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                required
-                className='mt-1 w-full'
-              />
-            </div>
+          <div className='w-full'>
+            <label className='text-sm text-gray-400'>
+              Location (max characters - 17)
+            </label>
+            <Input
+              maxLength={17}
+              placeholder='Eg. Emene, Enugu'
+              name='location'
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              required
+              className='mt-1 w-full'
+            />
+          </div>
 
+          <div className='flex gap-4 w-full'>
             <div className='w-full'>
               <label className='text-sm text-gray-400'>Price</label>
               <Input
@@ -203,31 +215,7 @@ const AddNewList = ({ user }: { user: User }) => {
                 className='mt-1 w-full'
               />
             </div>
-          </div>
 
-          <div className='flex gap-4'>
-            <div className='w-full'>
-              <label className='text-sm text-gray-400'>Beds</label>
-              <Input
-                placeholder='Beds'
-                name='beds'
-                type='text'
-                value={beds}
-                onChange={(e) => setBeds(e.target.value)}
-                className='mt-1'
-              />
-            </div>
-            <div className='w-full'>
-              <label className='text-sm text-gray-400'>Baths</label>
-              <Input
-                placeholder='Baths'
-                name='baths'
-                type='text'
-                value={baths}
-                onChange={(e) => setBaths(e.target.value)}
-                className='mt-1'
-              />
-            </div>
             <div className='w-full'>
               <label className='text-sm text-gray-400'>Sqm</label>
               <Input
@@ -244,6 +232,18 @@ const AddNewList = ({ user }: { user: User }) => {
 
           <div className='flex gap-4'>
             <div className='w-full'>
+              <label className='text-sm mb-1 text-gray-400'>Status</label>
+              <Select name='status' value={status} onValueChange={setStatus}>
+                <SelectTrigger>
+                  <SelectValue placeholder='Select status' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value='For sale'>For sale</SelectItem>
+                  <SelectItem value='For rent'>For rent</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className='w-full'>
               <label className='text-sm mb-1 text-gray-400'>Category</label>
               <Select
                 name='category'
@@ -258,20 +258,52 @@ const AddNewList = ({ user }: { user: User }) => {
                 </SelectContent>
               </Select>
             </div>
-
-            <div className='w-full'>
-              <label className='text-sm mb-1 text-gray-400'>Status</label>
-              <Select name='status' value={status} onValueChange={setStatus}>
-                <SelectTrigger>
-                  <SelectValue placeholder='Select status' />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value='For sale'>For sale</SelectItem>
-                  <SelectItem value='For rent'>For rent</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
           </div>
+
+          {category === "land" && (
+            <div className='text-sm flex flex-wrap items-center gap-4'>
+              <div className='flex items-center gap-3 border rounded-lg px-3 py-1.5'>
+                <p>Fenced</p>
+                <Switch checked={fenced} onCheckedChange={setFenced} />
+                {fenced ? "Yes" : "No"}
+              </div>
+
+              <div className='flex items-center gap-3 border rounded-lg px-3 py-2'>
+                <p>Gate</p>
+                <Switch checked={gate} onCheckedChange={setGate} />
+                {gate ? "Yes" : "No"}
+              </div>
+            </div>
+          )}
+
+          {category === "house" && (
+          
+              <div className='flex gap-4'>
+                <div className='w-full'>
+                  <label className='text-sm text-gray-400'>Beds</label>
+                  <Input
+                    placeholder='Beds'
+                    name='beds'
+                    type='text'
+                    value={beds}
+                    onChange={(e) => setBeds(e.target.value)}
+                    className='mt-1'
+                  />
+                </div>
+                <div className='w-full'>
+                  <label className='text-sm text-gray-400'>Baths</label>
+                  <Input
+                    placeholder='Baths'
+                    name='baths'
+                    type='text'
+                    value={baths}
+                    onChange={(e) => setBaths(e.target.value)}
+                    className='mt-1'
+                  />
+                </div>
+              </div>
+          
+          )}
 
           <div>
             <label className='text-sm text-gray-400'>Description</label>

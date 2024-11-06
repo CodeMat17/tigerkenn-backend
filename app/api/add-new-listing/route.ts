@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
-import { supabaseService } from "@/utils/supabase/service"; // Adjust the path to your Supabase service
+import { supabaseService } from "@/utils/supabase/service";
 import { v2 as cloudinary } from "cloudinary";
 import { revalidatePath } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
 
-// Cloudinary configuration (ensure env variables are set in .env file)
+// Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -15,111 +15,118 @@ type CloudinaryUploadResult = {
   secure_url: string;
 };
 
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const formData = await request.formData();
+    const formData = await req.formData();
 
-    // Extract form fields
     const title = formData.get("title") as string;
     const location = formData.get("location") as string;
-    const img = formData.get("img") as Blob; // Main image
+    const img = formData.get("img") as Blob;
     const desc = formData.get("desc") as string;
-    const beds = formData.get("beds") as string;
-    const baths = formData.get("baths") as string;
-    const sqm = formData.get("sqm");
-    const price = formData.get("price");
+    const beds = parseInt(formData.get("beds") as string);
+    const baths = parseInt(formData.get("baths") as string);
+    const sqm = parseInt(formData.get("sqm") as string);
+    const price = parseFloat(formData.get("price") as string);
     const category = formData.get("category") as string;
     const status = formData.get("status") as string;
+    const slug = formData.get("slug") as string;
+    const fenced = formData.get("fenced") === "true";
+    const gate = formData.get("gate") === "true";
     const files = formData.getAll("files") as File[];
-    const slug = formData.get('slug')
 
-    // Validation: ensure required fields are present
+    // validate the required fields
     if (
       !title ||
       !location ||
       !img ||
       !desc ||
-      !beds ||
-      !baths ||
       !sqm ||
       !price ||
       !category ||
-      !status || !slug
+      !status ||
+      !slug
     ) {
-      return new Response(
-        JSON.stringify({ error: "Fill the required fields" }),
+      return NextResponse.json(
+        { error: "Please enter the required fields." },
         { status: 400 }
       );
     }
 
-    // 1. Upload the main `img` to Cloudinary
-    const bytes = await img.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    // Upload main image to Cloudinary
+    const imgBytes = await img.arrayBuffer();
+    const imgBuffer = Buffer.from(imgBytes);
 
-    const imgUploadResponse = await new Promise<string>((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        { folder: "tigerkenn-homes" }, // Specify folder in Cloudinary
-        (error, result) => {
-          if (error) reject(error);
-          resolve(result?.secure_url || "");
-        }
-      );
-      uploadStream.end(buffer);
-    });
-
-    // 2. Upload `other_imgs` to Cloudinary and store URLs (limit to 4 images)
-    const uploadResults: string[] = await Promise.all(
-      files.map(async (file) => {
-       
-
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-
-        return new Promise<CloudinaryUploadResult>((resolve, reject) => {
-          const uploadStream = cloudinary.uploader.upload_stream(
-            { folder: "tigerkenn-homes" }, // Specify folder in Cloudinary
-            (error, result) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(result as CloudinaryUploadResult);
-              }
+    const imgResult = await new Promise<CloudinaryUploadResult>(
+      (resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: "tigerkenn-homes",
+          },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result as CloudinaryUploadResult);
             }
-          );
-          uploadStream.end(buffer);
-        }).then((result) => result.secure_url);
-      })
+          }
+        );
+        uploadStream.end(imgBuffer);
+      }
     );
 
-    // Filter out any empty string results from failed uploads
-    // const filteredUploadResults = uploadResults.filter((url) => url !== "");
+    // Upload additional images to Cloudinary (up to 4 images)
+    let uploadImages: string[] | null = null
+    if (files.length > 0) {
+    uploadImages =  await Promise.all(
+        files.slice(0, 4).map(async (file) => {
+          const bytes = await file.arrayBuffer();
+          const buffer = Buffer.from(bytes);
+          return new Promise<CloudinaryUploadResult>((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+              {
+                folder: "tigerkenn-homes",
+              },
+              (error, result) => {
+                if (error) {
+                  reject(error);
+                } else {
+                  resolve(result as CloudinaryUploadResult);
+                }
+              }
+            );
+            uploadStream.end(buffer);
+          }).then((result) => result.secure_url);
+        })
+      );
+    }
 
-    // 3. Insert the listing into Supabase
+
+    // Insert data into Supabase
     const { error } = await supabaseService
       .from("listings")
-      .insert([
-        {
-          title,
-          location,
-          img: imgUploadResponse, // Cloudinary URL for main image
-          other_imgs: uploadResults, // Array of Cloudinary URLs for other images (or null if none)
-          beds: parseInt(beds),
-          baths: parseInt(baths),
-          sqm: parseInt(sqm as string), // Parse sqm to float
-          price: parseInt(price as string), // Parse price to float
-          desc,
-          category,
-          status,
-          slug,
-        },
-      ])
+      .insert({
+        title,
+        location,
+        img: imgResult.secure_url,
+        other_imgs: uploadImages,
+        beds,
+        baths,
+        sqm,
+        price,
+        desc,
+        category,
+        status,
+        slug,
+        fenced,
+        gate,
+      })
       .select();
 
     if (error) {
       throw new Error(error.message);
     }
 
-    // Optionally revalidate paths for dynamic content
+    // Revalidate paths to reflect new data
     revalidatePath("/admin/listings");
     revalidatePath("/listings");
 
@@ -128,7 +135,7 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error uploading images or inserting into database:", error);
+    console.error("Error handling POST request:", error);
     return NextResponse.json(
       { error: "Failed to upload or insert data" },
       { status: 500 }

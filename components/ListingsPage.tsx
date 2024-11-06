@@ -32,6 +32,9 @@ type ListingsProps = {
   available: boolean;
   desc: string;
   slug: string;
+  category: string;
+  fenced: boolean
+  gate: boolean
 };
 
 const ListingsPage = ({ user }: { user: User }) => {
@@ -63,7 +66,7 @@ const ListingsPage = ({ user }: { user: User }) => {
     let query = supabase
       .from("listings")
       .select(
-        "id, img, price, status, title, beds, baths, sqm, location, available, desc, slug",
+        "id, img, price, status, title, beds, baths, sqm, location, available, desc, slug, category",
         {
           count: "exact",
         }
@@ -75,7 +78,7 @@ const ListingsPage = ({ user }: { user: User }) => {
       query = supabase
         .from("listings")
         .select(
-          "id, img, price, status, title, beds, baths, sqm, location, available, desc, slug",
+          "id, img, price, status, title, beds, baths, sqm, location, available, desc, slug, category",
           {
             count: "exact",
           }
@@ -158,14 +161,29 @@ const ListingsPage = ({ user }: { user: User }) => {
                           className='text-[17px] leading-relaxed  [&_p]:-my-1 line-clamp-2 text-sm dark:text-gray-400'
                           dangerouslySetInnerHTML={{ __html: list.desc }}
                         />
-                        <div className='text-xs flex items-center justify-between'>
-                          <p>{list.beds} Beds</p>
-                          <p>{list.baths} Baths</p>
-                          <p>{list.sqm} Sqm</p>
-                          <p className='px-1.5 py-1 rounded-xl bg-sky-700/80 text-sky-100'>
-                            {list.location}
-                          </p>
-                        </div>
+                        {list.category === "house" && (
+                          <div className='text-xs flex items-center justify-between'>
+                            <p>{list.beds} Beds</p>
+                            <p>{list.baths} Baths</p>
+                            <p>{list.sqm} Sqm</p>
+                            <p className='px-1.5 py-1 rounded-xl bg-sky-700/80 text-sky-100'>
+                              {list.location}
+                            </p>
+                          </div>
+                        )}
+
+                        {list.category === "land" && (
+                          <div className='text-xs flex items-center justify-between'>
+                            <p>{list.fenced ? 'Fenced' : 'Not fenced'}</p> |
+                            <p>{list.gate ? 'Gated' : 'No gate'}</p> |
+                            <p>{list.sqm} Sqm</p> |
+                            <p className='px-1.5 py-1 rounded-xl bg-sky-700/80 text-sky-100'>
+                              {list.location}
+                            </p>
+                          </div>
+                        )}
+
+
                       </div>
                     </div>
                   </Link>

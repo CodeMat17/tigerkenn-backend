@@ -50,10 +50,7 @@ const AddBlogPost = ({ user }: { user: User }) => {
       toast.error("No image selected");
       return;
     }
-    console.log("TITLE: ", title);
-    console.log("CONTENT: ", content);
-    console.log("IMAGE: ", selectedFile);
-    console.log("Slug: ", createSlug(title));
+   
 
     const formData = new FormData();
     formData.append("title", title);
