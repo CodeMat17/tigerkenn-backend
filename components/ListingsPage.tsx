@@ -66,7 +66,7 @@ const ListingsPage = ({ user }: { user: User }) => {
     let query = supabase
       .from("listings")
       .select(
-        "id, img, price, status, title, beds, baths, sqm, location, available, desc, slug, category",
+        "id, img, price, status, title, beds, baths, sqm, location, available, desc, slug, category, fenced, gate",
         {
           count: "exact",
         }
@@ -78,7 +78,7 @@ const ListingsPage = ({ user }: { user: User }) => {
       query = supabase
         .from("listings")
         .select(
-          "id, img, price, status, title, beds, baths, sqm, location, available, desc, slug, category",
+          "id, img, price, status, title, beds, baths, sqm, location, available, desc, slug, category, fenced, gate",
           {
             count: "exact",
           }
