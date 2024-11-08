@@ -238,8 +238,8 @@ const AddNewList = ({ user }: { user: User }) => {
                   <SelectValue placeholder='Select status' />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='For sale'>For sale</SelectItem>
-                  <SelectItem value='For rent'>For rent</SelectItem>
+                  <SelectItem value='For Sale'>For Sale</SelectItem>
+                  <SelectItem value='For Rent'>For Rent</SelectItem>
                 </SelectContent>
               </Select>
             </div>

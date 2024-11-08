@@ -2,20 +2,6 @@ import ListingsPage from "@/components/ListingsPage";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
-// type ListingsProps = {
-//   id: string;
-//   title: string;
-//   price: number;
-//   beds: number;
-//   baths: number;
-//   img: string;
-//   status: string;
-//   location: string;
-//   sqm: number;
-//   available: boolean;
-//   desc: string;
-// };
-
 const Listings = async () => {
   const supabase = createClient();
 

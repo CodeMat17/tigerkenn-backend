@@ -82,7 +82,8 @@ export async function POST(req: NextRequest) {
       throw updateError;
     }
 
-    revalidatePath(`/admin/listings/${id}`);
+    revalidatePath(`/listings`, "layout");
+    revalidatePath(`/listings/${id}`);
 
     return NextResponse.json({ success: true });
   } catch (error) {

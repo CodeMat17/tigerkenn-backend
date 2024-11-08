@@ -34,9 +34,26 @@ const Update = async ({ params: { slug } }: Props) => {
 
   return (
     <div className='py-12 px-4 w-full min-h-screen max-w-xl mx-auto'>
-      <h1 className='text-3xl text-center font-semibold mb-6'>Update Listings</h1>
+      <h1 className='text-3xl text-center font-semibold mb-6'>
+        Update Listings
+      </h1>
 
-      <UpdateListingPage id={listing.id} listTitle={listing.title} listLocation={listing.location} listDesc={listing.desc} listPrice={listing.price} listBeds={listing.beds} listBaths={listing.baths} listSqm={listing.sqm} listStatus={listing.status} listImg={listing.img} listOtherImgs={listing.other_imgs} />
+      <UpdateListingPage
+        id={listing.id}
+        listTitle={listing.title}
+        listLocation={listing.location}
+        listDesc={listing.desc}
+        listPrice={listing.price}
+        listBeds={listing.beds}
+        listBaths={listing.baths}
+        listSqm={listing.sqm}
+        listStatus={listing.status}
+        listImg={listing.img}
+        listOtherImgs={listing.other_imgs}
+        listCategory={listing.category}
+        listFenced={listing.fenced}
+        listGate={listing.gate}
+      />
     </div>
   );
 };
