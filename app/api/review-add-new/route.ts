@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error }, { status: 500 });
     }
 
-    revalidatePath(`/admin/reviews`);
+    revalidatePath(`/reviews`, 'layout');
 
     // Return a success response
     return NextResponse.json({ success: "Review added successfully" });

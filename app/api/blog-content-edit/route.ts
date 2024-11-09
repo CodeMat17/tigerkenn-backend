@@ -25,9 +25,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
-  revalidatePath(`/blogs`);
+  revalidatePath(`/blogs`, 'layout');
   revalidatePath(`/blogs/${id}`);
-  revalidatePath(`/admin/blogs/${id}`);
 
   return NextResponse.json({ data }, { status: 200 });
 }

@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
-  revalidatePath("/listings");
+  revalidatePath("/listings", 'layout');
   // redirect('/listings')
 
   return NextResponse.json({ data }, { status: 200 });

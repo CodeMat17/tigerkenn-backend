@@ -105,7 +105,6 @@ export async function POST(req: NextRequest) {
 
     // Revalidate the paths to ensure up-to-date content
     revalidatePath("/", 'layout');
-    revalidatePath("/admin");
 
     return NextResponse.json(
       { message: "Upload successful!" },

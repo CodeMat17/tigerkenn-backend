@@ -33,7 +33,7 @@ export async function DELETE(req: Request) {
 
       if (updateError) throw updateError;
       
-      revalidatePath('/admin', 'layout')
+      revalidatePath('/', 'layout')
 
     return NextResponse.json(
       { message: "Image deleted and Supabase record updated" },

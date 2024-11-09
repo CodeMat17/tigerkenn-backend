@@ -95,8 +95,9 @@ export async function POST(req: NextRequest) {
     if (updateError) {
       return NextResponse.json({ error }, { status: 500 });
     }
-    // Revalidate the /admin/listings path to update the cached data
-    revalidatePath(`/admin/listings/${id}`);
+    // Revalidate the listings path to update the cached data
+      revalidatePath("/listings", "layout");
+    revalidatePath(`/listings/${id}`);
 
     return NextResponse.json({
       success: true,

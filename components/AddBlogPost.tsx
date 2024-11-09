@@ -69,8 +69,9 @@ const AddBlogPost = ({ user }: { user: User }) => {
       const result = await res.json();
 
       if (res.ok) {
-        toast("Post updated successfully");
+        toast("Post added successfully");
         setError(null);
+        router.push("/blogs");
       } else {
         toast.error("Error updating image", {
           description: `${result.error}` || "Something went wrong",

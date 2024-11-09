@@ -1,11 +1,9 @@
 import { supabaseService } from "@/utils/supabase/service";
 import { revalidatePath } from "next/cache";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(req: Request) {
-  const formData = await req.formData();
-
-  const id = formData.get("id") as string;
+export async function DELETE(req: NextRequest) {
+  const { id } = await req.json();
 
   if (!id) {
     return NextResponse.json({ message: "ID is required" }, { status: 400 });
@@ -13,7 +11,7 @@ export async function DELETE(req: Request) {
 
   try {
     const { error } = await supabaseService
-      .from("reviews")
+      .from("listings")
       .delete()
       .eq("id", id);
 
@@ -21,15 +19,15 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    revalidatePath("/reviews", 'layout');
+    revalidatePath("/listings", "layout");
 
     return NextResponse.json(
-      { message: "Review deleted and database updated" },
+      { message: "listing deleted and database updated" },
       { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "Error deleting review", error },
+      { message: "Error deleting listing", error },
       { status: 500 }
     );
   }

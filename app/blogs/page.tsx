@@ -1,3 +1,4 @@
+import DeleteBlogPost from "@/components/DeleteBlogPost";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/server";
 import dayjs from "dayjs";
@@ -8,13 +9,13 @@ import { redirect } from "next/navigation";
 const BlogPage = async () => {
   const supabase = createClient();
 
-   const {
-     data: { user },
-   } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-   if (!user) {
-     redirect("/login");
-   }
+  if (!user) {
+    redirect("/login");
+  }
 
   const { data: blogs } = await supabase
     .from("blogs")
@@ -48,12 +49,16 @@ const BlogPage = async () => {
                   <h2 className='font-medium dark:text-gray-300 line-clamp-2 leading-6'>
                     {blog.title}
                   </h2>
-                  <p className='text-sm text-gray-500 dark:text-gray-400'>
-                    Published on{"  "}
-                    {dayjs(blog.published_at).format("MMM DD, YYYY")}
-                  </p>
                 </div>
               </Link>
+              <div className='pl-5 pr-4 flex items-center justify-between'>
+                <p className='text-sm text-gray-500 dark:text-gray-400'>
+                  Published on{"  "}
+                  {dayjs(blog.published_at).format("MMM DD, YYYY")}
+                </p>
+              
+                <DeleteBlogPost id={blog.id} title={blog.title} img={blog.img} />
+              </div>
             </div>
           ))}
       </div>

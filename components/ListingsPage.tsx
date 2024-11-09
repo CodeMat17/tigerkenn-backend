@@ -11,6 +11,7 @@ import { type User } from "@supabase/supabase-js";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
+  MapPinIcon,
   MinusIcon,
   SearchIcon,
 } from "lucide-react";
@@ -18,6 +19,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import DeleteListing from "./DeleteListing";
 
 type ListingsProps = {
   id: string;
@@ -33,8 +35,8 @@ type ListingsProps = {
   desc: string;
   slug: string;
   category: string;
-  fenced: boolean
-  gate: boolean
+  fenced: boolean;
+  gate: boolean;
 };
 
 const ListingsPage = ({ user }: { user: User }) => {
@@ -143,50 +145,59 @@ const ListingsPage = ({ user }: { user: User }) => {
             <div className='flex flex-wrap justify-center gap-4'>
               {listings &&
                 listings.map((list) => (
-                  <Link key={list.id} href={`/listings/${list.slug}`}>
-                    <div className='max-w-[300px] border  rounded-xl overflow-hidden shadow-md '>
-                      <Image
-                        alt={list.id}
-                        priority
-                        width={320}
-                        height={150}
-                        src={list.img}
-                        className='w-[320px] aspect-video object-cover'
-                      />
-                      <div className='px-4 pb-4 pt-2 space-y-2'>
-                        <h2 className='leading-5 font-medium truncate'>
-                          {list.title}
-                        </h2>
-                        <div
-                          className='text-[17px] leading-relaxed  [&_p]:-my-1 line-clamp-2 text-sm dark:text-gray-400'
-                          dangerouslySetInnerHTML={{ __html: list.desc }}
+                  <div
+                    key={list.id}
+                    className='max-w-[300px] border  rounded-xl overflow-hidden shadow-md '>
+                    <Link href={`/listings/${list.slug}`}>
+                      <div>
+                        <Image
+                          alt={list.id}
+                          priority
+                          width={320}
+                          height={150}
+                          src={list.img}
+                          className='w-[320px] aspect-video object-cover'
                         />
-                        {list.category === "house" && (
-                          <div className='text-xs flex items-center justify-between'>
-                            <p>{list.beds} Beds</p>
-                            <p>{list.baths} Baths</p>
-                            <p>{list.sqm} Sqm</p>
-                            <p className='px-1.5 py-1 rounded-xl bg-sky-700/80 text-sky-100'>
-                              {list.location}
-                            </p>
-                          </div>
-                        )}
+                        <div className='px-4 pb-4 pt-2 space-y-2'>
+                          <h2 className='leading-5 font-medium truncate'>
+                            {list.title}
+                          </h2>
+                          <div
+                            className='text-[17px] leading-relaxed  [&_p]:-my-1 line-clamp-2 text-sm dark:text-gray-400'
+                            dangerouslySetInnerHTML={{ __html: list.desc }}
+                          />
+                          {list.category === "house" && (
+                            <div className='text-xs flex items-center justify-between'>
+                              <p>{list.beds} Beds</p>
+                              <p>{list.baths} Baths</p>
+                              <p>{list.sqm} Sqm</p>
+                           
+                            </div>
+                          )}
 
-                        {list.category === "land" && (
-                          <div className='text-xs flex items-center justify-between'>
-                            <p>{list.fenced ? 'Fenced' : 'Not fenced'}</p> |
-                            <p>{list.gate ? 'Gated' : 'No gate'}</p> |
-                            <p>{list.sqm} Sqm</p> |
-                            <p className='px-1.5 py-1 rounded-xl bg-sky-700/80 text-sky-100'>
-                              {list.location}
-                            </p>
-                          </div>
-                        )}
-
-
+                          {list.category === "land" && (
+                            <div className='text-xs flex items-center justify-between'>
+                              <p>{list.fenced ? "Fenced" : "Not fenced"}</p> |
+                              <p>{list.gate ? "Gated" : "No gate"}</p> |
+                              <p>{list.sqm} Sqm</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
+                    </Link>
+                    <div className='flex items-center justify-between px-4 text-sm mb-2'>
+                      <div className='flex items-center gap-1 text-blue-800'>
+                        {" "}
+                        <MapPinIcon className='w-4 h-4' />
+                        <p>{list.location}</p>
+                      </div>
+                      <DeleteListing
+                        id={list.id}
+                        title={list.title}
+                        img={list.img}
+                      />
                     </div>
-                  </Link>
+                  </div>
                 ))}
             </div>
           )}

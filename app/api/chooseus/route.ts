@@ -1,4 +1,5 @@
 import { supabaseService } from "@/utils/supabase/service";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -23,6 +24,8 @@ export async function POST(req: Request) {
     console.error("Error updating data:", error);
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
+
+  revalidatePath('/about-us','layout')
 
   return NextResponse.json({ data }, { status: 200 });
 }

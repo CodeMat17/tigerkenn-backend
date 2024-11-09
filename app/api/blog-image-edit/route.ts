@@ -84,8 +84,8 @@ export async function POST(req: NextRequest) {
     if (updateError) {
       throw updateError;
     }
-
-    revalidatePath(`/admin/blog/${id}`);
+  revalidatePath(`/blogs`, 'layout');
+    revalidatePath(`/blogs/${id}`);
 
     return NextResponse.json({ success: true });
   } catch (error) {

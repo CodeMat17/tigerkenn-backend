@@ -127,8 +127,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Revalidate paths to reflect new data
-    revalidatePath("/admin/listings");
-    revalidatePath("/listings");
+  
+    revalidatePath("/listings", 'layout');
 
     return NextResponse.json(
       { message: "Listing added successfully!" },

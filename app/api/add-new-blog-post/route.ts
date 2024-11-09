@@ -72,8 +72,8 @@ export async function POST(req: NextRequest) {
       throw updateError;
     }
 
-    revalidatePath(`/blog`);
-    revalidatePath(`/admin/blog`);
+    revalidatePath(`/blogs`, 'layout');
+ 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error uploading image:", error);

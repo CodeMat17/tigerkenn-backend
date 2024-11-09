@@ -26,8 +26,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error }, { status: 500 });
     }
 
-    revalidatePath(`/admin/reviews/${id}`);
-    revalidatePath(`/admin/reviews`);
+      revalidatePath("/reviews", "layout");
+    revalidatePath(`/reviews/${id}`);
 
     // Return a success response
     return NextResponse.json({ success: "Review updated successfully" });

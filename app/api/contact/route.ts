@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Revalidate the contact page to reflect updated information
-    revalidatePath(`/contact`);
+    revalidatePath(`/contact`, 'layout');
 
     // Return success response
     return NextResponse.json({ success: true });
