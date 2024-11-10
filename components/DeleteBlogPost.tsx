@@ -13,6 +13,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 type Props = {
   id: string;
@@ -21,6 +22,8 @@ type Props = {
 };
 
 const DeleteBlogPost = ({ id, title, img }: Props) => {
+const router = useRouter()
+
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -46,6 +49,7 @@ const DeleteBlogPost = ({ id, title, img }: Props) => {
         toast.success(`DONE!`, {
           description: "Blog post deleted successfully",
         });
+           router.refresh();
       } else {
         alert(`Something went wrong: ${result.message}`);
         toast.error("ERROR!", {
