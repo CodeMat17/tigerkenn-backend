@@ -50,7 +50,8 @@ const router = useRouter()
         toast.success(`DONE!`, {
           description: "Listing deleted successfully",
         });
-             router.refresh();
+          router.refresh();
+             router.push("/listings");
       } else {
         alert(`Something went wrong: ${result.message}`);
         toast.error("ERROR!", {
