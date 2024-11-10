@@ -18,10 +18,11 @@ import { useRouter } from "next/navigation";
 type Props = {
   id: string;
   title: string;
-  img: string;
+    img: string;
+  reload: () => void;
 };
 
-const DeleteListing = ({ id, title, img }: Props) => {
+const DeleteListing = ({ id, title, img, reload }: Props) => {
 const router = useRouter()
 
   const [open, setOpen] = useState(false);
@@ -51,7 +52,7 @@ const router = useRouter()
           description: "Listing deleted successfully",
         });
           router.refresh();
-             router.push("/listings");
+            reload();
       } else {
         alert(`Something went wrong: ${result.message}`);
         toast.error("ERROR!", {

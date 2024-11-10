@@ -2,6 +2,8 @@ import ListingsPage from "@/components/ListingsPage";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
+export const revalidate = 0
+
 const Listings = async () => {
   const supabase = createClient();
 

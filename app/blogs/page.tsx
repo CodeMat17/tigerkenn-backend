@@ -5,6 +5,8 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+ 
+export const revalidate = 0
 
 const BlogPage = async () => {
   const supabase = createClient();

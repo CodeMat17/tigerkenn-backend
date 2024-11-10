@@ -171,7 +171,6 @@ const ListingsPage = ({ user }: { user: User }) => {
                               <p>{list.beds} Beds</p>
                               <p>{list.baths} Baths</p>
                               <p>{list.sqm} Sqm</p>
-                           
                             </div>
                           )}
 
@@ -195,6 +194,7 @@ const ListingsPage = ({ user }: { user: User }) => {
                         id={list.id}
                         title={list.title}
                         img={list.img}
+                        reload={fetchListings}
                       />
                     </div>
                   </div>

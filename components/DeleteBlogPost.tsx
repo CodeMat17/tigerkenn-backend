@@ -48,9 +48,11 @@ const router = useRouter()
         setOpen(false);
         toast.success(`DONE!`, {
           description: "Blog post deleted successfully",
-        });
+        }); 
+        
         router.refresh();
-         router.push('/blogs');
+        router.push('/listings')
+   
       } else {
         alert(`Something went wrong: ${result.message}`);
         toast.error("ERROR!", {
