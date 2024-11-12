@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sheet";
 import {
   AlignRightIcon,
+  BookmarkCheckIcon,
   LayoutList,
   LayoutPanelLeftIcon,
   PodcastIcon,
@@ -27,6 +28,7 @@ const links = [
   { label: "ABOUT Us", href: "/about-us", icon: UsersIcon },
   { label: "LISTINGS", href: "/listings", icon: LayoutList },
   { label: "BLOG POSTS", href: "/blogs", icon: RssIcon },
+  { label: "COMPLETED PROJECTS", href: "/completed-projects", icon: BookmarkCheckIcon },
   { label: "CONTACT US", href: "/contact-us", icon: UserRoundPenIcon },
   { label: "SUBSCRIBERS", href: "/subscribers", icon: PodcastIcon },
 ];

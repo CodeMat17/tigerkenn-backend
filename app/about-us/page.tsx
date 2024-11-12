@@ -2,6 +2,7 @@ import EditAboutUsChooseUs from "@/components/EditAboutUsChooseUs";
 import EditAboutUsIntro from "@/components/EditAboutUsIntro";
 import EditAboutUsMission from "@/components/EditAboutUsMission";
 import EditAboutUsServices from "@/components/EditAboutUsServices";
+
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -40,6 +41,8 @@ const AboutUs = async () => {
           dataTitle={intro.title}
           dataDesc={intro.desc}
         />
+
+        {/* <EditAboutUsStat /> */}
 
         <EditAboutUsServices
           id={services.id}
