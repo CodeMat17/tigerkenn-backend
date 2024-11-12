@@ -80,6 +80,7 @@ const UpdateListingPage = ({
   const [updatingLocation, setUpdatingLocation] = useState(false);
   const [updatingPrice, setUpdatingPrice] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
+    const [updatingCategory, setUpdatingCategory] = useState(false);
   const [updatingBeds, setUpdatingBeds] = useState(false);
   const [updatingBaths, setUpdatingBaths] = useState(false);
   const [updatingSqm, setUpdatingSqm] = useState(false);
@@ -231,6 +232,40 @@ const UpdateListingPage = ({
       setUpdatingStatus(false);
     }
   };
+
+    const updateListingCategory = async () => {
+      setUpdatingCategory(true);
+
+      //Basic validation
+      if (!category) {
+        toast.error("Category cannot be blank");
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/update-listing-category", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, category }),
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          toast("DONE!", {
+            description: "Category updated successfully",
+          });
+        } else {
+          toast.error("ERROR!", {
+            description: `${result.error} || Something went wrong`,
+          });
+        }
+      } catch (error) {
+        console.log("ErrorMsg: ", error);
+      } finally {
+        setUpdatingCategory(false);
+      }
+    };
 
   const updateListingBeds = async () => {
     setUpdatingBeds(true);
@@ -386,7 +421,7 @@ const UpdateListingPage = ({
           });
         } else {
           toast.error("ERROR!", {
-            description: `${result.error} || Something went wrong`,
+            description: `${result.error}` || `Something went wrong`,
           });
         }
       } catch (error) {
@@ -414,7 +449,7 @@ const UpdateListingPage = ({
          });
        } else {
          toast.error("ERROR!", {
-           description: `${result.error} || Something went wrong`,
+           description: `${result.error}` || `Something went wrong`,
          });
        }
      } catch (error) {
@@ -426,6 +461,7 @@ const UpdateListingPage = ({
 
   return (
     <div className='w-full max-w-4xl mx-auto'>
+    
       <div className='py-8 flex flex-col gap-3'>
         <div>
           <label>Title</label>
@@ -548,7 +584,7 @@ const UpdateListingPage = ({
             <div className='flex items-center gap-1 mt-1'>
               <Select
                 name='category'
-                value={category || "Select Status"}
+                value={category || "Select Category"}
                 onValueChange={(category) => setCategory(category)}>
                 <SelectTrigger>
                   <SelectValue placeholder='Select status' />
@@ -560,10 +596,10 @@ const UpdateListingPage = ({
               </Select>
 
               <Button
-                onClick={updateListingStatus}
+                onClick={updateListingCategory}
                 size='icon'
                 className='px-6'>
-                {updatingStatus ? (
+                {updatingCategory ? (
                   <MinusIcon className='animate-spin' />
                 ) : (
                   <CloudUploadIcon />

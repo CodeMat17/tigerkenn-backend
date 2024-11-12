@@ -1,10 +1,11 @@
 "use client";
 
-import {   MinusIcon } from "lucide-react";
+import {    MinusIcon } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
+import DeleteListingOtherImages from "./DeleteListingOtherImages";
 
 type Props = {
   id: string;
@@ -40,10 +41,10 @@ const ListingOtherImages = ({ id, images }: Props) => {
   };
 
   // Image tap for replacement
-  const handleImageTap = (index: number) => {
-    setSelectedImageIndex(index);
-    handleButtonClick();
-  };
+  // const handleImageTap = (index: number) => {
+  //   setSelectedImageIndex(index);
+  //   handleButtonClick();
+  // };
 
   // Submit new or replacement images
   const handleSubmit = async () => {
@@ -101,16 +102,17 @@ const ListingOtherImages = ({ id, images }: Props) => {
     <div className='mt-1 flex flex-col md:flex-row items-center justify-between gap-4 bg-sky-50 dark:bg-gray-900 rounded-xl p-7'>
       <div className='flex flex-wrap gap-3 md:w-[70%] items-center justify-center md:justify-start'>
         {images && images.length > 0 ? (
-          images.map((file, i) => (
-            <Image
-              key={i}
-              alt={`Other Image Preview ${i}`}
-              width={150}
-              height={80}
-              src={file}
-              className='mt-1 w-[200px] sm:w-[150px] aspect-video rounded-xl object-cover cursor-pointer'
-              onClick={() => handleImageTap(i)} // Tap to select image for replacement
-            />
+          images.map((img, i) => (
+            <div key={i} className='relative'>
+              <Image
+                alt=''
+                width={150}
+                height={80}
+                src={img}
+                className='rounded-lg w-[150px] aspect-video'
+              />
+              <DeleteListingOtherImages id={id} img={img} />
+            </div>
           ))
         ) : (
           <p>No descriptive image attached yet</p>
@@ -127,7 +129,7 @@ const ListingOtherImages = ({ id, images }: Props) => {
         />
         <div className='flex flex-col justify-center'>
           <Button onClick={handleButtonClick} className='w-full'>
-           Attach Images
+            Attach Images
           </Button>
           {selectedFiles && (
             <span className='text-xs text-center'>
@@ -141,11 +143,13 @@ const ListingOtherImages = ({ id, images }: Props) => {
             onClick={handleSubmit}
             disabled={updating || !selectedFiles}
             className={`w-full `}>
-            {updating
-              ? <MinusIcon className="animate-spin"/>
-              : selectedImageIndex !== null
-              ? "Replace Image"
-              : "Update Images"}
+            {updating ? (
+              <MinusIcon className='animate-spin' />
+            ) : selectedImageIndex !== null ? (
+              "Replace Image"
+            ) : (
+              "Update Images"
+            )}
           </Button>
         </div>
       </div>

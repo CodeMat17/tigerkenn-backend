@@ -38,6 +38,7 @@ const Update = async ({ params: { slug } }: Props) => {
         Update Listings
       </h1>
 
+
       <UpdateListingPage
         id={listing.id}
         listTitle={listing.title}

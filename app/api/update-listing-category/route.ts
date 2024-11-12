@@ -3,12 +3,12 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 
 export async function POST(req: Request) {
-  const { id, gate } = await req.json();
+  const { id, category } = await req.json();
 
   // validate
-  if (!id ) {
+  if (!id || !category) {
     return NextResponse.json(
-      { error: "ERROR!" },
+      { error: "ID and category are required." },
       { status: 400 }
     );
   }
@@ -16,12 +16,12 @@ export async function POST(req: Request) {
   // update record in Supabase
   const { data, error } = await supabaseService
     .from("listings")
-    .update({ gate })
+    .update({ category })
     .eq("id", id)
     .select();
 
   if (error) {
-    console.error("Error updating gate record:", error);
+    console.error("Error updating category:", error);
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 

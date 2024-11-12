@@ -6,9 +6,9 @@ export async function POST(req: Request) {
   const { id, fenced } = await req.json();
 
   // validate
-  if (!id || !fenced) {
+  if (!id) {
     return NextResponse.json(
-      { error: "ID and fence data are required." },
+      { error: "ID is required." },
       { status: 400 }
     );
   }
